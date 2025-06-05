@@ -1,0 +1,43 @@
+name: Flutter CI with Telegram Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.5'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run format check
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Run analyze
+        run: dart analyze .
+
+      - name: Send Telegram notification
+        env:
+          BOT_TOKEN: \${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: \${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ \$? -eq 0 ]; then
+            MESSAGE="✅ כל הבדיקות עברו בהצלחה על הענף \$GITHUB_REF"
+          else
+            MESSAGE="❌ חלק מהבדיקות נכשלו על הענף \$GITHUB_REF"
+          fi
+
+          curl -s -X POST "https://api.telegram.org/bot\${BOT_TOKEN}/sendMessage" \
+            -d chat_id="\${CHAT_ID}" \
+            -d text="\${MESSAGE}"
