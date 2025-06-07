@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/firebase/firebase_initializer.dart';
-import 'features/auth/auth_wrapper.dart';
+import 'ui/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,12 +14,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'APP-OINT',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const AuthWrapper(),
+    return Consumer(
+      builder: (context, ref, _) {
+        final router = ref.watch(routerProvider);
+        return MaterialApp.router(
+          title: 'APP-OINT',
+          theme: ThemeData(primarySwatch: Colors.blue),
+          routerConfig: router,
+        );
+      },
     );
   }
 }
