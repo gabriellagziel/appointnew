@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/auth_provider.dart';
 import 'login_screen.dart';
+import '../personal_scheduler/presentation/personal_home_screen.dart';
 
 class AuthWrapper extends ConsumerWidget {
   const AuthWrapper({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class AuthWrapper extends ConsumerWidget {
         if (user == null) {
           return const LoginScreen();
         } else {
-          return const HomePlaceholder();
+          return const PersonalHomeScreen();
         }
       },
       loading: () => const Scaffold(
@@ -28,27 +29,4 @@ class AuthWrapper extends ConsumerWidget {
   }
 }
 
-class HomePlaceholder extends StatelessWidget {
-  const HomePlaceholder({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read(authServiceProvider).signOut();
-            },
-          ),
-        ],
-      ),
-      body: const Center(
-        child: Text('Welcome! You are signed in.'),
-      ),
-    );
-  }
-}
 
