@@ -32,3 +32,10 @@ Flutter SDK along with Dart. The tasks are outlined below.
 The repository originally contained only `.gitignore` and `LICENSE` files.
 This README and `setup.sh` have been added to document and automate the
 initial setup process.
+
+## Personal Scheduler UI
+
+The `PersonalHomeScreen` under `lib/features/personal_scheduler` presents a simple
+calendar header with a list of sample appointments. A floating action button
+navigates to a placeholder screen for adding new appointments. Basic widget
+tests for this feature live in `test/features/personal_scheduler`.
